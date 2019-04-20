@@ -8,5 +8,18 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
         }
+        stage('Deploy Staging') {
+            steps {
+                echo 'Deploying to staging...'
+            }
+        }
+        stage('Sanity Check') {
+            input 'Does staging look good?'   
+        }
+        stage('Deploy Production') {
+            steps {
+                echo 'Deploying to production...'
+            }
+        }
     }
 }
