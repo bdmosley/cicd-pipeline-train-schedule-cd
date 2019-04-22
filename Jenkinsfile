@@ -8,9 +8,12 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
         }
-        stage('Deploy Staging') {
+        
+        stage('DeployToStaging') {
+            when {
+                branch 'master'
+            }
             steps {
-                echo 'Deploying to staging...'
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     sshPublisher(
                         failOnError: true,
@@ -36,15 +39,6 @@ pipeline {
                 }
             }
         }
-        stage('Sanity Check') {
-            steps {
-                input 'Does staging look good?'
-            }
-        }
-        stage('Deploy Production') {
-            steps {
-                echo 'Deploying to production...'
-            }
-        }
+        
     }
 }
